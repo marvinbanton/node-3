@@ -65,9 +65,19 @@ module.exports = {
     },
 
 
-   
+    fetchAllPosts: (req, res) => {
+        const db = req.app.get('db')
 
-
+        db.posts
+            .find({
+                userId: req.params.userId
+            })
+            .then(post => res.status(200).send(post))
+            .catch(err => {
+                console.log(err)
+                res.status(500).end();
+            })
+    },
 
 
 }

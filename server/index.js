@@ -23,6 +23,7 @@ massive({
 	app.post('/api/posts', post.createPost)
 	app.get('/api/posts/:id', post.fetchSinglePost)
 	app.post('/api/comments', post.createComment)
+	app.get('/api/fetch/posts/:userId', post.fetchAllPosts)
 
 	app.get('/debug', (req, res) => {
 		res.status(200).json(req.app.get('db'))
