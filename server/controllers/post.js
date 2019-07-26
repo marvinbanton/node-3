@@ -80,4 +80,30 @@ module.exports = {
     },
 
 
+    updatePost: (req, res) => {
+        const db = req.app.get('db')
+        const { userId, content } = req.body
+        const { postId }  = req.params
+
+        db.posts
+            .update(
+                {
+
+                    'userId': userId,
+                    'id': postId
+                },
+                {
+                    'content': content
+                })
+            .then(post => res.status(200).send(post))
+            .catch(err => {
+                console.log(err)
+                res.status(500).end();
+            })
+    }
+
+
+
+
+
 }

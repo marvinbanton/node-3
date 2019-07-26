@@ -24,6 +24,7 @@ massive({
 	app.get('/api/posts/:id', post.fetchSinglePost)
 	app.post('/api/comments', post.createComment)
 	app.get('/api/fetch/posts/:userId', post.fetchAllPosts)
+	app.patch('/api/update/:postId', post.updatePost)
 
 	app.get('/debug', (req, res) => {
 		res.status(200).json(req.app.get('db'))
