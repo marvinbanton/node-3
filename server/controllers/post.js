@@ -83,7 +83,7 @@ module.exports = {
     updatePost: (req, res) => {
         const db = req.app.get('db')
         const { userId, content } = req.body
-        const { postId }  = req.params
+        const { postId } = req.params
 
         db.posts
             .update(
@@ -100,7 +100,31 @@ module.exports = {
                 console.log(err)
                 res.status(500).end();
             })
+    },
+
+
+    editComment: (req, res) => {
+        const db = req.app.get('db')
+        const { userId, comment } = req.body
+        const { commentId } = req.params
+
+        db.comments
+            .update(
+                {
+                    'id': commentId,
+                    'userId': userId
+                },
+                {
+                    'comment': comment
+                })
+            .then(comment => res.status(200).send(comment))
+            .catch(err => {
+                console.log(err)
+                res.status(500).end();
+            })
+
     }
+
 
 
 
