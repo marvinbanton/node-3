@@ -2,6 +2,8 @@ const express = require('express');
 const massive = require('massive');
 const users = require('./controllers/users.js');
 const post = require('./controllers/post.js')
+const jwt = require('jsonwebtoken');
+const secret = require('../secret');
 
 massive({
 	host: 'localhost',
@@ -14,6 +16,23 @@ massive({
 
 	app.set('db', db);
 
+	var authenticate = function (req, res, next) {
+		if (req._parsedUrl.pathname === '/api/users') return next();
+		if (!req.headers.authorization) {
+			return res.status(401).end();
+		}
+
+		try {
+			const token = req.headers.authorization.split(' ')[1];
+			jwt.verify(token, secret);
+			next();
+		} catch (err) {
+			console.error(err);
+			res.status(401).end();
+		}
+	};
+
+	app.use(authenticate);
 	app.use(express.json());
 
 	app.post('/api/users', users.create);
